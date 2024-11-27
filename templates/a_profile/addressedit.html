@@ -1,0 +1,29 @@
+<div class="px-16">
+    <div class=" flex justify-between py-6 font-bold text-xl text-gray-600">
+        <h2 >Address Information</h2>
+    </div>
+    <div >
+        <form method="POST" action="{% url 'address_edit' %}" enctype="multipart/form-data" >
+            {% csrf_token %}    
+            
+            {% for field in form %}
+                <div class="mb-4 flex gap-4 items-center">
+                    <div class="basis-1/4">
+                        <label class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    </div>
+                    <div class="basis-3/4">
+                        {{ field }}
+                        {% if field.errors %}
+                        <p class="text-red-500 text-sm">{{ field.errors }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            
+            <div class="flex gap-5 justify-start pl-32">
+                <button class="px-3 py-1 bg-orange-500 rounded text-white font-semibold" type="submit" >Submit</button>
+                <a class="button secondaryAction ml-1" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

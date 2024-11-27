@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block layout %}
+
+<div class="relative h-screen object-cover w-full flex justify-center items-center bg-[url({% static 'images/signup-background.jpg' %})]">
+    <div class="absolute inset-0 bg-black bg-opacity-70"></div>
+    
+    <div class="relative z-10 text-white flex flex-col items-center bg-blue-100 bg-opacity-10 p-6 rounded-md shadow-lg w-96">
+        <h1 class="text-3xl font-bold pb-8">Sign Up</h1>
+        <form method="post" class="flex flex-col gap-4 w-full text-black">
+            {% csrf_token %}
+            <div class="flex flex-col gap-2">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+            </div>
+            <div class="flex flex-col gap-2">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+            <div class="flex flex-col gap-2">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+            </div>
+            <div class="flex flex-col gap-2">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">
+                Sign Up
+            </button>
+        </form>
+        <a href="{% url 'account_login' %}" class="text-blue-500 hover:underline mt-5">
+            Already have an account? Log in
+        </a>
+    </div>
+</div>
+
+{% endblock %}

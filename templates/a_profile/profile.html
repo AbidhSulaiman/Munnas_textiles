@@ -1,0 +1,57 @@
+{% extends 'layouts/b.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="min-h-screen bg-teal-50">
+    <div class="grid grid-cols-4 px-36 py-2">
+        <div class="col-span-1 mx-5">
+            <div class="flex py-4 px-4 gap-2 my-2 rounded shadow-md bg-white">
+                <div>
+                    {% if profile.avatar %}
+                    <img class="w-14 rounded-full" src="{{ profile.avatar }}" alt="user-male-circle--v1" />
+                    {% else %}
+                    <img class="w-14 rounded-full" src="https://img.icons8.com/color/96/user-male-circle--v1.png" alt="user-male-circle--v1"/>
+                    {% endif %}
+                </div>
+                <div>
+                    <p>Hello,</p>
+                    <h2 class="font-semibold text-gray-600">Abidh Sulaiman</h2>
+                </div>
+            </div>
+
+            <div class="flex flex-col py-4 px-4 gap-2 my-2 rounded shadow-lg bg-white">
+                <div class="flex gap-2 border-b-2 py-2 font-semibold text-gray-600 cursor-pointer">
+                    <img class="w-8" src="https://img.icons8.com/color/96/purchase-order.png" alt="purchase-order" />
+                    <h2>My Orders</h2>
+                </div>
+                <div class="flex gap-2 border-b-2 py-3 font-semibold text-gray-600 cursor-pointer">
+                    <img class="w-6" src="https://img.icons8.com/material/24/person-male.png" alt="person-male" />
+                    <h2><a hx-get="{% url 'profile_edit' %}" hx-target="#form-container" hx-swap="innerHTML">
+                        Account Settings
+                        </a></h2>
+                </div>
+                <div class="flex gap-2 border-b-2 py-3 font-semibold text-gray-600 cursor-pointer">
+                    <img class="w-6" src="https://img.icons8.com/material/24/address--v1.png" alt="address--v1" />
+                    <h2><a hx-get="{% url 'address_edit' %}" hx-target="#form-container" hx-swap="innerHTML">
+                        Address Settings</a></h2>
+                </div>
+                <div class="flex gap-2 border-b-2 py-3 font-semibold text-gray-600 cursor-pointer">
+                    <img class="w-6" src="https://img.icons8.com/material/24/online-payment-.png" alt="online-payment-" />
+                    <h2>Payments</h2>
+                </div>
+                <div class="flex gap-2 border-b-2 py-3 font-semibold text-gray-600 cursor-pointer">
+                    <img class="w-6" src="https://img.icons8.com/material/24/exit.png" alt="exit" />
+                    <h2><a href="{% url 'account_logout' %}">Logout</a></h2>
+                </div>
+            </div>
+        </div>
+
+        <div id="form-container" class="col-span-3 bg-white my-2 p-4">
+            {% include 'a_profile/profileedit.html' %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

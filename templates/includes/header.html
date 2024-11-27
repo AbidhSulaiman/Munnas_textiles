@@ -1,0 +1,93 @@
+<header class="py-1 sticky top-0 z-20 bg-white">
+        
+    <nav class="flex justify-between items-center px-16 py-4">
+        <div>
+            <a href=""><img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/search--v1.png" alt="search--v1"/></a>
+        </div>
+        <div>
+            <h3 class="text-3xl text-red-600 font1"><a href="{% url 'home' %}">Munnas Textiles</a></h3>
+        </div>
+        <div class="">
+            {% if user.is_authenticated %}
+              <ul class="flex justify-between gap-5 items-center">
+                <li><a class="text-lg py-1 px-2 noto-serif " href="">Home</a></li>
+                <li><a href="{% url 'cart_view' %}">
+                  <img class="w-8 h-8"  src="https://img.icons8.com/color/48/shopping-cart--v1.png" alt="shopping-cart--v1"/>
+                  </a></li>
+                <li x-data="{profileOpen : false}">
+                  <a @click="profileOpen = !profileOpen"  @click.away="profileOpen = false" 
+                  class="flex items-center justify-between gap-2 text-lg py-1 px-2 noto-serif ">
+                    {{ user.username}}
+                    <img class="w-8 h-8" src="https://img.icons8.com/fluency-systems-filled/96/user-male-circle.png" alt="user-male-circle"/>
+                  </a>
+
+                  <div x-show="profileOpen" x-cloak class="absolute right-0 bg-white text-black shadow rounded-lg w-40 py-2 z-20">
+                    <ul class="flex flex-col gap-2 justify-center pl-4 w-full">
+                      <li><a class="py-1 hover:bg-gray-200 text-center px-4 rounded-md" href="{% url 'profile_view' %}">My Profile</a></li>
+                      <li><a class="py-1 hover:bg-gray-200 text-center px-4 rounded-md" href="">Edit Profile</a></li>
+                      <li><a class="py-1 hover:bg-gray-200 text-center px-4 rounded-md" href="{% url 'account_logout' %}">Log Out</a></li>
+                    </ul>
+                  </div>
+                </li>
+                
+              </ul>
+            {% else %}
+              <ul class="flex items-center gap-3">
+                <li><a class="px-3 py-1 bg-blue-900 rounded text-gray-300 font-semibold" href="{% url 'account_login' %}">Log In</a></li>
+                <li><a class="px-3 py-1 bg-blue-900 rounded text-gray-300 font-semibold" href="{% url 'account_signup' %}">Sign Up</a></li>
+              </ul>
+            {% endif %}
+        </div>
+    </nav>
+    <div>
+      {% if categories %}
+        <ul class="flex justify-center items-center gap-12">
+          {% for category in categories %}
+        <li x-data="{ categoryOpen: false }" class="relative">
+            <!-- Mouse events on the link -->
+            <a @mouseover="categoryOpen = true" @mouseleave="categoryOpen = false"
+                class="noto-serif text-sm text-gray-800 relative cursor-pointer group" href="{% url 'category_view' category.id %}">
+                {{ category.name }}
+                <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <!-- Mouse events on the dropdown -->
+            {% if category.subcategories.all %}
+            <div x-show="categoryOpen" x-cloak 
+                @mouseover="categoryOpen = true" @mouseleave="categoryOpen = false"
+                class="absolute top-full mt-6 bg-slate-300 bg-opacity-60 text-black font-semibold shadow-lg rounded-lg w-60 p-2 z-20"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 transform scale-95"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-95">
+                <ul>
+                  
+                  {% for subcategory in category.subcategories.all %}
+                  <li>
+                      <a href="{% url 'category_view' subcategory.id %}" class="block px-4 py-2">{{ subcategory.name }}</a>
+                  </li>
+                  {% endfor %}
+                
+                </ul>
+            </div>
+            {% endif %}
+        </li>
+        {% endfor %}
+
+          <li>
+            <a class="noto-serif text-sm text-gray-800 relative group cursor-pointer" href="#new-arrivals">
+              NEW ARRIVALS
+              <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+            </a>
+          </li>
+          <li>
+            <a class="noto-serif text-sm text-gray-800 relative group cursor-pointer" href="">
+              STORE LOCATOR
+              <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+            </a>
+          </li>
+        </ul>
+      {% endif %}
+    </div>
+</header>

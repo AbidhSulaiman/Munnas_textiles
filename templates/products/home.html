@@ -1,0 +1,29 @@
+
+{% extends 'layouts/a.html' %}
+
+{% block content %}
+
+{% include 'includes/hero.html' %}
+
+{% include 'includes/categorysection.html' %}
+
+<div id="new-arrivals" class="px-32 py-10 pt-16">
+    <div class="">
+        <h2 class="noto-serif text-md text-center py-10">New Arrivals</h2>
+        <div class="grid grid-cols-4 gap-5 ">
+            {% for product in new_arrivals %}
+            <div class="">
+                <a href="{% url 'product_view' product.id %}">
+                    <img class="h-[400px]" src="{{product.get_first_image}}" alt="">
+                    <span class="text-gray-600 text-sm">@Munnas</span>
+                    <p class="font-semibold text-start py-1">{{product.name}}</p>
+                    <p>Rs. <span> {{product.price}} </span><span class="text-green-600 font-semibold"> {{product.discount}}% off</span></p>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

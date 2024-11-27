@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block layout %}
+
+<div class="relative h-screen object-cover w-full flex justify-center items-center bg-[url({% static 'images/login-background.jpg' %})]">
+    <div class="absolute inset-0 bg-black bg-opacity-70"></div>
+    
+    <div class="relative z-10 text-white flex gap-5">
+        <!-- Welcome Section -->
+        <div class="flex flex-col gap-5 justify-center px-10">
+            <h2 class="text-3xl text-gray-200">Munnas Textiles</h2>
+            <p class="font-bold">Welcome to Munnas. Let's connect!</p>
+        </div>
+
+        <!-- Login Form Section -->
+        <div class="flex flex-col items-center bg-blue-100 bg-opacity-10 text-white p-6 rounded-md shadow-lg">
+            <h1 class="text-3xl font-bold pb-8">Login</h1>
+            <form method="post" class="flex flex-col gap-4 w-80">
+                {% csrf_token %}
+                <div class="flex flex-col gap-2">
+                    {{ form.login.label_tag }}
+                    {{ form.login }}
+                </div>
+                <div class="flex flex-col gap-2">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">
+                    Login
+                </button>
+            </form>
+            <a href="{% url 'account_reset_password' %}" class="text-blue-500 hover:underline mt-5">
+                Forgot password?
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
