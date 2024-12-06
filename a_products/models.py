@@ -1,10 +1,13 @@
 from django.db import models
 from decimal import Decimal
+from django.templatetags.static import static
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100)
-    category_thubnail = models.ImageField(upload_to='category_thubnail', blank=True, null=True)
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
+    category_Thumbnail = models.ImageField(upload_to='category_thubnail', blank=True, null=True)
     parent = models.ForeignKey(
         'self', on_delete=models.CASCADE, related_name='subcategories', blank=True, null=True
     )
@@ -13,6 +16,19 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
+    
+    @property
+    def category_image(self):
+        if self.category_Thumbnail:
+            image =  self.category_Thumbnail.url
+        else:
+            image = static('images/default_image.png')
+            
+        return image
+    
+    def clean(self):
+        if self.parent == self:
+            raise ValidationError("A category cannot be its own parent.")
     
     class Meta:
         verbose_name_plural = "Categories"
@@ -28,7 +44,7 @@ class Product(models.Model):
     name = models.CharField(max_length=300)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=00.00)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=00.00, validators=[MinValueValidator(Decimal('0.01'))])
     discount = models.PositiveIntegerField()
     stock = models.PositiveIntegerField(default=0)
     tags = models.ManyToManyField(Tag, related_name='products', blank=True)
@@ -48,6 +64,17 @@ class Product(models.Model):
     def discount_price(self):
         discount_fraction = Decimal(self.discount) / Decimal(100)
         return self.price - (self.price * discount_fraction)
+    
+    def clean(self):
+        if self.discount < 0 or self.discount > 100:
+            raise ValidationError("Discount must be between 0 and 100.")
+    
+    def calculate_discounted_price(self):
+        return self.price - self.discount_price
+
+
+    def is_stock_low(self, threshold=5):
+        return self.stock <= threshold
     
     class Meta:
         verbose_name_plural = "Products"

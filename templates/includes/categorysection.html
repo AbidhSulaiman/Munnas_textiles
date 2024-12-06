@@ -6,10 +6,10 @@
         <h2 class="noto-serif text-md text-center py-10">Explore Categories</h2>
         <div class="grid grid-cols-4 gap-5 ">
             {% for category in categories %}
-            {% if category.category_thubnail %}
+            {% if category.category_image %}
             <div class="">
                 <a href="{% url 'category_view' category.id %}">
-                    <img class="h-[400px]" src="{{ category.category_thubnail.url}}" alt="">
+                    <img class="h-[400px]" src="{{ category.category_image}}" alt="">
                     <p class="font-semibold text-center py-1">{{category.name}}</p>
                 </a>
             </div>
