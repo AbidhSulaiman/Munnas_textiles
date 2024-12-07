@@ -1,5 +1,7 @@
 from allauth.account.forms import LoginForm,SignupForm
 from django import forms
+from django.core.exceptions import ValidationError
+
 
 class CustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):
@@ -34,7 +36,18 @@ class CustomSignupForm(SignupForm):
             'placeholder': 'Confirm Password'
         })
 
-    def save(self, request):
-        user = super().save(request)
-        # Add custom logic here if needed, e.g., assign groups or roles
-        return user
+
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
+        
+        if len(password) < 8:
+            print("Password must be at least 8 characters long.")
+            raise ValidationError("Password must be at least 8 characters long.")
+        if not any(char.isdigit() for char in password):
+            raise ValidationError("Password must contain at least one numeric character.")
+        if not any(char.isalpha() for char in password):
+            raise ValidationError("Password must contain at least one alphabetic character.")
+        if not any(char in "!@#$%^&*()-_=+[]{}|;:'\",.<>?/" for char in password):
+            raise ValidationError("Password must contain at least one special character.")
+        
+        return password

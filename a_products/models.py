@@ -46,7 +46,7 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=00.00, validators=[MinValueValidator(Decimal('0.01'))])
     discount = models.PositiveIntegerField()
-    stock = models.PositiveIntegerField(default=0)
+    stock = models.PositiveIntegerField(default=1)
     tags = models.ManyToManyField(Tag, related_name='products', blank=True)
     available_size = models.CharField(max_length=250, null=True, blank=True)
     is_available = models.BooleanField(default=True)
@@ -62,15 +62,17 @@ class Product(models.Model):
     
     @property
     def discount_price(self):
+        price = Decimal(str(self.price))  # Convert price to a Decimal explicitly
         discount_fraction = Decimal(self.discount) / Decimal(100)
-        return self.price - (self.price * discount_fraction)
+        return price - (price * discount_fraction)
     
     def clean(self):
         if self.discount < 0 or self.discount > 100:
             raise ValidationError("Discount must be between 0 and 100.")
     
     def calculate_discounted_price(self):
-        return self.price - self.discount_price
+        price = Decimal(str(self.price))  # Convert self.price to Decimal
+        return price - self.discount_price
 
 
     def is_stock_low(self, threshold=5):
