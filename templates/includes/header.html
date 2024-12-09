@@ -18,13 +18,16 @@
                   <a @click="profileOpen = !profileOpen"  @click.away="profileOpen = false" 
                   class="flex items-center justify-between gap-2 text-lg py-1 px-2 noto-serif ">
                     {{ user.username}}
+                    {% if user.profile.avatar %}
+                    <img class="w-8 h-8 rounded-full" src="{{user.profile.avatar}}" alt="user-male-circle"/>
+                    {% else %}
                     <img class="w-8 h-8" src="https://img.icons8.com/fluency-systems-filled/96/user-male-circle.png" alt="user-male-circle"/>
+                    {% endif %}
                   </a>
 
                   <div x-show="profileOpen" x-cloak class="absolute right-0 bg-white text-black shadow rounded-lg w-40 py-2 z-20">
                     <ul class="flex flex-col gap-2 justify-center pl-4 w-full">
                       <li><a class="py-1 hover:bg-gray-200 text-center px-4 rounded-md" href="{% url 'profile_view' %}">My Profile</a></li>
-                      <li><a class="py-1 hover:bg-gray-200 text-center px-4 rounded-md" href="">Edit Profile</a></li>
                       <li><a class="py-1 hover:bg-gray-200 text-center px-4 rounded-md" href="{% url 'account_logout' %}">Log Out</a></li>
                     </ul>
                   </div>

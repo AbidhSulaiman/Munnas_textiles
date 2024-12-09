@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.templatetags.static import static
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -16,12 +17,11 @@ class Profile(models.Model):
     
     @property
     def avatar(self):
-        if self.profile_image.url:
+        if self.profile_image:
             avatar = self.profile_image.url
         else:
             avatar = None
-        return avatar
-    
+        return avatar  
         
     class Meta:
         verbose_name_plural = "Profiles"

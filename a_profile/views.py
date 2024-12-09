@@ -6,12 +6,10 @@ from .forms import ProfileForm, AddressForm
 
 def profile_view(request):
     profile = get_object_or_404(Profile, user=request.user)
-    profileA_edit_form = ProfileForm(instance=profile)
+    profile_edit_form = ProfileForm(instance=profile)
     address_user = get_object_or_404(Address, profile = profile)
 
-    
-    
-    context = {'form': profileA_edit_form,
+    context = {'form': profile_edit_form,
                'profile':profile}
     
     return render(request, 'a_profile/profile.html', context)

@@ -34,6 +34,10 @@ def add_to_cart(request, product_id):
             product=product
         )
         messages.success(request, 'Item added to the cart')
+    else:
+        cart_item = get_object_or_404(CartItem, product=product)
+        cart_item.quantity += 1
+        cart_item.save()
 
     return redirect('cart_view')
 

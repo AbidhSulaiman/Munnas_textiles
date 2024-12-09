@@ -8,5 +8,5 @@ class MyAccountAdapter(DefaultAccountAdapter):
         return path
     
     def get_signup_redirect_url(self, request):
-        path = "/"
+        path = "/profile/profile_view/"
         return path
