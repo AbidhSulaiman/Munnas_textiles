@@ -65,4 +65,15 @@ def update_cart_item_quantity(request, item_id):
 
         cart_item.save()
         return redirect('cart_view')
+    
+def update_cart_item_size(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id)  # Replace with your actual model
+    selected_size = request.POST.get('selected_size')
+
+    if selected_size:
+        cart_item.selected_size = selected_size
+        cart_item.save()
+    
+    # Redirect back to the cart or a relevant page
+    return redirect('cart_view')
 

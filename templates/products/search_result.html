@@ -1,0 +1,68 @@
+{% extends 'layouts/a.html' %}
+
+{% block content %}
+{% load static %}
+<div class="flex mx-10 py-10 gap-2">
+
+    <div class="basis-1/5 px-10">
+        <div class="flex justify-between pb-10">
+            <h2 class="text-sm">FILTERS</h2>
+            <a class="text-sm hover:text-gray-600" href="">CLEAR ALL</a>
+        </div>
+
+        <div class="w-full max-w-xs mx-auto">
+            <!-- Categories Section -->
+            <div 
+                id="categoryToggle" 
+                class=" flex justify-between text-md cursor-pointer border-b border-gray-300">
+                <h3 class="text-sm">CATEGORIES</h3>
+                <img class="w-4 mr-5" src="https://img.icons8.com/fluency-systems-filled/96/sort-down.png" alt="sort-down"/>
+            </div>
+            <ul 
+                id="categoryList" 
+                class="hidden mt-2 space-y-1 text-gray-700">
+                <li><a href="#" class="block p-1 hover:bg-gray-100 rounded">Top Wear</a></li>
+                <li><a href="#" class="block p-1 hover:bg-gray-100 rounded">Bottom Wear</a></li>
+                <li><a href="#" class="block p-1 hover:bg-gray-100 rounded">Ethnic Wear</a></li>
+                <li><a href="#" class="block p-1 hover:bg-gray-100 rounded">Inner Wear</a></li>
+            </ul>
+        </div>
+        <div class="w-full max-w-xs mx-auto py-3">
+            <!-- Rating section  -->
+            <div 
+                id="ratingToggle" 
+                class=" flex justify-between text-md cursor-pointer border-b border-gray-300">
+                <h3 class="text-sm">RATING</h3>
+                <img class="w-4 mr-5" src="https://img.icons8.com/fluency-systems-filled/96/sort-down.png" alt="sort-down"/>
+            </div>
+            <ul id="ratingList" class="hidden mt-2 space-y-1 text-gray-700">
+                <li><a href="" class="block p-1 hover:bg-gray-100 rounded"> 4 * & Above</a></li>
+                <li><a href="" class="block p-1 hover:bg-gray-100 rounded">3 * & Above</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="basis-4/5">
+        <div class="">
+            <div class="">
+                <div class="grid grid-cols-4 gap-5 ">
+                    
+                    {% for product in products %}
+                    <div class="">
+                        <a href="{% url 'product_view' product.id %}">
+                            <img class="h-[400px]" src="{{ product.get_first_image }}" alt="">
+                            <span class="text-gray-600 text-sm">@Munnas</span>
+                            <p class="font-semibold text-start py-1">{{product.name}}</p>
+                            <p>Rs. <span> {{product.price}} </span><span class="text-green-600 font-semibold"> {{product.discount}}% off</span></p>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+    
+        </div>
+    </div>
+
+ </div>
+{% endblock %}

@@ -1,6 +1,7 @@
 {% extends 'layouts/a.html' %}
 
 {% block content %}
+{% load custom_filters %}
 {% load static %}
 
 <div class="my-10 mx-32">
@@ -29,9 +30,20 @@
 
                     <div class="flex flex-col gap-2">
                         <h2 class="font-semibold text-lg text-gray-600">{{items.product.name}}</h2>
-                        <p>Size : L</p>
+                        <form method="POST" action="{% url 'update_cart_item_size' items.id %}">
+                            {% csrf_token %}
+                            <p class="flex gap-2">
+                                Size:
+                                {% for size in items.product.available_size|split:"," %}
+                                    <button name="selected_size" value="{{ size }}" type="submit"
+                                    class="border-2 border-gray-100 px-1 cursor-pointer {% if size == items.selected_size %}bg-gray-200 border-gray-200{% endif %} hover:bg-gray-200">
+                                        {{ size }}
+                                    </button>
+                                {% endfor %}
+                            </p>
+                        </form>
+                        
                         <div class="flex gap-2">
-                            <!-- DAD6D5 -->
                             {% for i in range_5 %}
                             <img class="w-4" src="https://img.icons8.com/ios-filled/50/0C9425/star--v1.png" alt="star--v1"/>
                             {% endfor %}
@@ -54,7 +66,7 @@
                     <a href=""
                         class="px-12 py-2 rounded-lg border-2 border-gray-100 shadow-md font-semibold hover:text-white hover:bg-slate-500">Save For Later
                     </a>
-                    <a href="{% url 'payment' %}"
+                    <a href="{% url 'payment' items.id %}"
                         class="px-12 py-2 rounded-lg border-2 border-gray-100 shadow-md font-semibold hover:text-white hover:bg-slate-500">Buy This Now
                     </a>
 

@@ -28,12 +28,18 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    selected_size = models.CharField(max_length=5, blank=True, null=True)
     added_at = models.DateTimeField(auto_now_add=True)
     
 
     @property
     def total_price(self):
         return self.quantity * self.product.price
+    
+    @property
+    def total_discount_per_item(self):
+        return (self.product.price - self.product.discount_price) * self.quantity
+    
     @property
     def total_discounted_price(self):
         return self.quantity * self.product.discount_price

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Product,Category
+from .models import Product,Category, Tag
 from django.db.models import Q
 
 
@@ -45,3 +45,17 @@ def product_view(request, product_id):
         'product_size':product_size
     }
     return render(request, 'products/product_view.html', context)
+
+def search_product(request):
+    
+    if request.method == 'POST':
+        data = request.POST.get('search_query')
+        tags = Tag.objects.filter(name__icontains=data)
+        products = Product.objects.filter(tags__in=tags).distinct()         
+    else:
+        products = None
+    
+    context = {
+        'products':products
+    }
+    return render(request, 'products/search_result.html', context)

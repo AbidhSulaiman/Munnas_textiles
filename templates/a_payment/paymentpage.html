@@ -4,7 +4,96 @@
 {% load static %}
 
 <div>
-    <h2>Payments</h2>
+    <div class="my-10 mx-32">
+        <h2 class="ml-36 font-bold text-gray-500 text-xl">Payments</h2>
+        <div class="grid grid-cols-3 gap-2">
+            <div class="col-span-2 m-1 py-4 px-2 ml-36">
+                {% if cart_item.product %}
+                <div class="flex flex-col gap-2 shadow-md my-2 py-6">
+                    <div class="flex gap-4">
+                        <div>
+                            <a href="{% url 'product_view' cart_item.product.id %}"><img class="w-24 h-20 rounded-md object-cover px-2" src="{{cart_item.product.get_first_image}}" alt=""></a>
+                            <form method="POST" action="{% url 'update_cart_item_quantity' cart_item.id %}">
+                                {% csrf_token %}
+                                <div class="flex mx-1 px-1 items-center justify-between my-1 py-1 border-2">
+                                    <button name="action" value="decrease" type="submit" class="w-6 font-bold">
+                                        <img width="48" height="48" src="https://img.icons8.com/sf-regular/48/minus.png" alt="minus"/>
+                                    </button>
+                                    <p>{{ cart_item.quantity }}</p>
+                                    <button name="action" value="increase" type="submit" class="w-5">
+                                        <img width="48" height="48" src="https://img.icons8.com/material-outlined/48/plus--v1.png" alt="plus--v1"/>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+    
+                        <div class="flex flex-col gap-2">
+                            <h2 class="font-semibold text-lg text-gray-600">{{cart_item.product.name}}</h2>
+                            <p>Size : {{cart_item.selected_size}}</p>
+                            <div class="flex gap-2">
+                                {% for i in range_5 %}
+                                <img class="w-4" src="https://img.icons8.com/ios-filled/50/0C9425/star--v1.png" alt="star--v1"/>
+                                {% endfor %}
+                            </div>
+                            <div class="flex items-center gap-2 text-lg">
+                                <div class="flex items-center">
+                                    <img  class="w-6 h-5" src="https://img.icons8.com/ios-filled/48/0C9425/down--v1.png" alt="down--v1"/>
+                                    <p class="font-semibold text-green-700">{{cart_item.product.discount}}%</p>
+                                </div>
+                                <p class="text-gray-400 line-through font-semibold">&#8377; {{cart_item.product.price}}</p>
+                                <p class="text-lg text-gray-700 text-2xl font-semibold">&#8377; {{cart_item.product.discount_price}} </span>
+                            </div>
+                        </div>
+    
+                    </div>
+                    <div class="flex justify-end pr-10 ">
+                        <a href=""
+                            class="px-12 text-white py-2 bg-orange-500 rounded-lg border-2 border-gray-100 shadow-md font-semibold hover:bg-orange-600">Continue
+                        </a>
+    
+                    </div>
+                </div>
+                {% else %}
+                <div class="w-full h-full pb-52 flex items-center justify-center rounded-lg shadow-md ">
+                    <p class="text-gray-600 text-lg font-semibold">Your cart is empty.</p>
+                </div>
+                {% endif %}
+
+                
+            </div>
+            
+            <div class="col-span-1 m-1 my-6 px-2 py-4 max-w-[300px]">
+                <div class="p-4 shadow-md rounded-lg">
+                    <h2 class="text-lg font-bold text-gray-700">Price Details</h2>
+                    <table class="w-full mt-4 text-sm">
+                        <tr class="flex justify-between border-b py-2">
+                            <td>Price ({{cart_item.quantity}})</td>
+                            <td class="text-right">{{cart_item.total_price}}</td>
+                        </tr>
+                        <tr class="flex justify-between border-b py-2">
+                            <td>Discount</td>
+                            <td class="text-right text-green-500">-{{cart_item.total_discount_per_item}}</td>
+                        </tr>
+                        <tr class="flex justify-between border-b py-2">
+                            <td>Delivery Charges</td>
+                            <td class="text-right text-gray-500">Free</td>
+                        </tr>
+                        <tr class="flex justify-between font-semibold py-2">
+                            <td>Total Amount</td>
+                            <td class="text-right">{{cart_item.total_discounted_price}}</td>
+                        </tr>
+                    </table>
+                </div>                
+                
+                <div class="py-10 shadow-md p-4">
+                    <h3 class="pb-2 font-semibold text-gray-600">Deliver to:</h3>
+                    <p>{{full_address|slice:":30"}}...</p>
+                    <button class="px-4 py-1 rounded-md border-2 text-violet-700 font-bold">Change</button>
+                </div>
+            </div>      
+        </div>
+        
+    </div>
 </div>
 
 {% endblock %}
